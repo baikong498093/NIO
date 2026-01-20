@@ -28,7 +28,7 @@ public class TestNettyPromise {
         }).start();
         //4. 主线程阻塞等待结果
         Logger.logger.debug("主线程等待结果");
-        Logger.logger.debug("promise result:{}",promise.get());
+        Logger.logger.debug("读取到的计算结果 result:{}",promise.get());
 
     }
 }
