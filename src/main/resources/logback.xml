@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+    <!-- 1. 全局属性（可复用） -->
+    <property name="LOG_PATH" value="logs/" /> <!-- 日志文件存储路径 -->
+    <property name="LOG_FILE_NAME" value="app" /> <!-- 日志文件名前缀 -->
+
+    <!-- 2. 控制台输出 Appender -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 编码器：定义日志格式 -->
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <charset>UTF-8</charset> <!-- 避免中文乱码 -->
+        </encoder>
+    </appender>
+
+    <!-- 3. 文件输出 Appender（滚动日志，按大小+时间分割） -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 目标文件路径 -->
+        <file>logFile.log</file>
+        <!-- 滚动策略：按时间（天）+ 文件大小分割 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 归档文件命名格式（例如：app.2025-11-27.0.log） -->
+            <fileNamePattern>logFile.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>30</maxHistory> <!-- 保留 30 天的归档日志 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize> <!-- 单个文件最大 100MB，超了则新建文件（%i 自增） -->
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <!-- 编码器 -->
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 4. 日志级别配置 -->
+    <logger name="NIO.c1" level="DEBUG" additivity="false">
+        <!-- 该包下的日志输出到 CONSOLE 和 FILE -->
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="io.netty.handler.logging.LoggingHandler" level="DEBUG" additivity="false">
+        <!-- 该包下的日志输出到 CONSOLE 和 FILE -->
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+
+
+    <!-- 5. 根日志（默认所有未匹配的日志） -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" /> <!-- 根日志只输出到控制台 -->
+    </root>
+</configuration>
