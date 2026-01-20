@@ -63,5 +63,7 @@ public class CloseFutureClient {
         });
         //test
         Logger.logger.debug("test");
+        //test2
+        Logger.logger.debug("test2");
     }
 }
