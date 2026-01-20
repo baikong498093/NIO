@@ -61,11 +61,6 @@ public class CloseFutureClient {
             Logger.logger.debug("关闭完成");
             group.shutdownGracefully();
         });
-        //test
-        Logger.logger.debug("test");
-        //test2
-        Logger.logger.debug("test2");
-        //test3
-        Logger.logger.debug("test3");
+
     }
 }
